@@ -1,0 +1,14 @@
+
+main {
+    padding: 3rem 1.5rem;
+    font-family:  'Open Sans Condensed','Comic Neue', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
+    width: 330px;
+    font-size: large;
+    margin-top: 100px;
+}
+

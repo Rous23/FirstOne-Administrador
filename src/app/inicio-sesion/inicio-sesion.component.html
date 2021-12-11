@@ -1,0 +1,30 @@
+<main id="main-iniciar-sesion">
+    <div id="logo" style="text-align: center;" class="py-3">
+        <img src="../../assets/Logotipo.svg" alt="Logo">
+    </div>
+    <div id="texto-principal" style="text-align: center;font-size: large;font-weight: bold;" class="py-3">Iniciar Sesión Administrador</div>
+    <div id="formulario-iniciar-sesion">
+        <form [formGroup] = "formInicio">
+            <div class="form-group">
+                <label id="label-usuario" for="input-usuario" class="labels">Usuario</label>
+                <input formControlName="usuario" id="input-usuario" type="text" class="form-control" placeholder="admin" [ngClass]="{'is-invalid': usuario.invalid && (usuario.dirty || usuario.touched), 'is-valid': usuario.valid}" required>
+                <div *ngIf="usuario.invalid && (usuario.dirty || usuario.touched)" style="color: red;">
+                    <span *ngIf="usuario.errors.required">El campo es obligatorio</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="label-contrasenia" for="input-contrasenia" class="labels">Contraseña</label>
+                <input formControlName="contrasena" id="input-contrasenia" type="password" class="form-control" placeholder="contraseña" [ngClass]="{'is-invalid': contrasena.invalid && (contrasena.dirty || contrasena.touched), 'is-valid': contrasena.valid}" required>
+                <div *ngIf="contrasena.invalid && (contrasena.dirty || contrasena.touched)" style="color: red;">
+                    <span *ngIf="contrasena.errors.required">El campo es obligatorio</span>
+                </div>
+            </div>
+            <div *ngIf="error" style="color: red;">
+                <span>Usuario o contraseña incorrecta</span>
+            </div>
+            <div style="display: flex;justify-content: center;">
+                <button id="boton-iniciar-sesion" type="button" class="btn btn-primary all-btn" (click)="iniciarSesion()">Iniciar Sesión</button>
+            </div>
+        </form>
+    </div>
+</main>

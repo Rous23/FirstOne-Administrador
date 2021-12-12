@@ -167,7 +167,7 @@ export class MainComponent implements OnInit {
     this.categoriasService.guardarEmpresa(this.seleccionado, formData).subscribe(
       res=>{
         console.log(res);
-        this.ngOnInit()
+        this.cambiarCategoria()
       },
       error=>{
         console.error(error);
@@ -186,7 +186,7 @@ export class MainComponent implements OnInit {
     this.categoriasService.guardarProducto(this.seleccionado, this.empresaSeleccionada ,formData).subscribe(
       res=>{
         console.log(res);
-        this.ngOnInit()
+        this.cambiarEmpresa()
       },
       error=>{
         console.error(error);

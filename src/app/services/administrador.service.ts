@@ -10,6 +10,6 @@ export class AdministradorService {
   constructor(private httpClient:HttpClient) { }
 
   inicioSesion(datos):Observable<any>{
-    return this.httpClient.post(`http://localhost:8888/administrador`, datos);
+    return this.httpClient.post(`http://localhost:8888/administradors`, datos);
   }
 }

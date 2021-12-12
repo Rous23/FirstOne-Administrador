@@ -1,1 +1,321 @@
-<app-sidebar></app-sidebar>
+<header class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#" style="text-align: center;">
+        <img src="../../assets/Logotipo.svg">
+    </a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+        <a class="nav-link px-3" href="#">Sign out</a>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-fixed pt-4">
+                <div class="pl-2 pt-4 pb-2" style="display: flex;justify-content: start;align-items: center;width: 100%;">
+                    <div style="width: 50px;display: flex;" class="px-1">
+                        <img style="width: 100%;" src="https://res.cloudinary.com/dekixopkw/image/upload/v1639033655/FirstOne/Clientes/yu6fnfkvgu6hhd9fmwii.png" alt="">
+                    </div>
+                    <span class="px-1"> Administrador</span>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item py-2 pt-2">
+                        <a class="nav-link" aria-current="page" [ngClass]="{active: regionActiva == 'empresasPorCategoria'}" (click)="empresasCategoria()" style="cursor: pointer;">
+                        Empresas
+                        </a>
+                    </li>
+                    <li class="nav-item py-2">
+                        <a class="nav-link" [ngClass]="{active: regionActiva == 'productosEmpresa'}" (click)="productosEmpresa()" style="cursor: pointer;">
+                            Productos
+                        </a>
+                    </li>
+                    <li class="nav-item py-2">
+                        <a class="nav-link" [ngClass]="{active: regionActiva == 'motoristas'}" (click)="motoristas()" style="cursor: pointer;">
+                            Motoristas registrados
+                        </a>
+                    </li>
+                    <li class="nav-item py-2">
+                        <a class="nav-link" [ngClass]="{active: regionActiva == 'ordenes'}" (click)="ordenes()" style="cursor: pointer;">
+                            Ordenes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 ml-auto pt-4">
+        <!-- <select [(ngModel)]="usuarioSeleccionado" name="options" id="usuarioActual" class="form-control mr-3" (change)="cambiarUsuario()">
+            <option *ngFor="let usuario of usuarios" [ngValue]="usuario._id">{{usuario.nombre}}</option>
+        </select> -->
+            <div *ngIf="regionActiva == 'empresasPorCategoria'">
+                <div style="display: flex;    justify-content: space-between;">
+                    <div>
+                        <h5>Seleccione una categoria</h5>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary my-3 " [disabled]="!seleccionado" (click)="abrirModalFormulario(contentForm)">Agregar Empresa</button>
+                    </div>
+                </div>
+                
+                <select [(ngModel)]="seleccionado" name="options" class="form-control my-1 mb-4" id="" (change)="cambiarCategoria()">
+                    <option *ngFor="let categoria of categorias; let index=index" [ngValue]="categoria._id">{{categoria.nombre}}</option>
+                </select>
+                
+                <h5>Empresas por categoria</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover" style="background-color: white;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col" style="font-size: 15px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;width: 150px;">Descripcion</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of empresas">
+                                <td>{{item._id}}</td>
+                                <td>{{item.nombre}}</td>
+                                <td>{{item.descripcion}}</td>
+                                <td>{{item.correo}}</td>
+                                <td style="cursor: pointer;" (click)="editarEmpresa(item)"><fa-icon style="color:blue" [icon]="faEdit"></fa-icon></td>
+                                <td style="cursor: pointer;" (click)="eliminarEmpresa(item._id)"><fa-icon style="color:red" [icon]="faTrash"></fa-icon></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="regionActiva == 'productosEmpresa'">
+                <div style="display: flex;justify-content: space-between;">
+                    <div class="pb-1">
+                        <h5>Seleccione una categoria</h5>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary my-3 " [disabled]="!empresaSeleccionada" (click)="abrirModalProducto(content)">Agregar Producto</button>
+                    </div>
+                </div>
+                <select [(ngModel)]="seleccionado" name="options" class="form-control my-1 mb-4" id="" (change)="cambiarCategoria()">
+                    <option *ngFor="let categoria of categorias; let index=index" [ngValue]="categoria._id">{{categoria.nombre}}</option>
+                </select>
+                <div>
+                    <h5>Seleccione una empresa</h5>
+                </div>
+                <select [(ngModel)]="empresaSeleccionada" name="options" class="form-control my-1 mb-4" id="" (change)="cambiarEmpresa()">
+                    <option *ngFor="let empresa of empresas; let index=index" [ngValue]="empresa._id">{{empresa.nombre}}</option>
+                </select>
+                <h5>Productos</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover" style="background-color: white;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of productos">
+                                <td>{{item._id}}</td>
+                                <td>{{item.nombre}}</td>
+                                <td>{{item.descripcion}}</td>
+                                <td>{{item.precio}}</td>
+                                <td>{{item.nombre}}</td>
+                                <th scope="col" style="cursor: pointer;" (click)="editarProducto(item)">
+                                    <fa-icon style="color:blue" [icon]="faEdit"></fa-icon>
+                                </th>
+                                <th scope="col" style="cursor: pointer;" (click)="eliminarProducto(item._id)">
+                                    <fa-icon style="color:red" [icon]="faTrash"></fa-icon>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="regionActiva == 'motoristas'">
+                <h5>Motoristas Registrados</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover" style="background-color: white;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Aprobado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of arrayMotoristas">
+                                <td>{{item._id}}</td>
+                                <td>{{item.nombres}}</td>
+                                <td>{{item.apellidos}}</td>
+                                <td>{{item.correo}}</td>
+                                <td>{{item.usuario}}</td>
+                                <td><input [checked]="item.aprobado == 1" type="checkbox" (click)="aprobarMotorista(item)"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="regionActiva == 'ordenes'">
+                <h5>Ordenes Disponibles</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover" style="background-color: white;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre Cliente</th>
+                                <th scope="col">Direccion Entrega</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Cantidad Productos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of ordenesDisponibles">
+                                <td>{{item._id}}</td>
+                                <td>{{item.cliente.nombres}}</td>
+                                <td>{{item.cliente.direccionEntrega.direccion}}</td>
+                                <td>{{item.estado}}</td>
+                                <td>{{item.total}}</td>
+                                <td>{{item.productos.length}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <h5>Ordenes Realizadas</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover" style="background-color: white;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1,001</td>
+                                <td>random</td>
+                                <td>data</td>
+                                <td>placeholder</td>
+                                <td>text</td>
+                                <td>text</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+            </div>
+        </main>
+    </div>
+</div>
+
+<!--Modal Form Empresa-->
+<ng-template #contentForm let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Datos de la Empresa</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div id="formulario-actualizar-datos" class="form-modal">
+            <form>
+                <div class="form-group">
+                    <label id="label-nombre" for="input-nombre">Nombre</label>
+                    <input [(ngModel)]="nombre" id="input-nombre" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label id="label-correo" for="input-correo">Correo electrónico</label>
+                    <input [(ngModel)]="correo" id="input-correo" type="email" class="form-control" name="correo">
+                </div>
+                <div class="form-group">
+                    <label id="label-telefono" for="input-telefono">Telefono</label>
+                    <input [(ngModel)]="telefono" id="input-telefono" type="number" class="form-control" name="telefono">
+                </div>
+                <div class="form-group">
+                    <label id="label-descripcion" for="input-descripcion">Descripcion</label>
+                    <input [(ngModel)]="descripcion" id="input-descripcion" type="text" class="form-control" name="descripcion">
+                </div>
+                <div class="form-group">
+                    <label id="label-calificacion" for="input-calificacion">Calificacion</label>
+                    <input [(ngModel)]="calificacion" id="input-calificacion" type="number" class="form-control" name="calificacion">
+                </div>
+                <div class="form-group">
+                    <label id="label-limagen" for="input-imagen">Imagen de Perfil</label><br>
+                    <input type="file" name="profile" (change)="onFileSelect($event)" id="input-imagen"/>
+                </div>
+                <div class="form-group">
+                    <label id="label-baner" for="input-baner">Baner</label><br>
+                    <input type="file" name="profile" (change)="onFileSelectBanner($event)" id="input-baner"/>
+                </div>
+                <!-- <div>
+                    <button (click)="onSubmit()">Upload</button>
+                </div> -->
+                <div style="display: flex;justify-content: center;" class="py-3">
+                    <button id="cerrar-formulario" type="button" class="btn btn-primary mx-2" (click)="modal.close('cerrar modal')">Cerrar</button>
+                    <button id="agregar-info-empresa" type="button" class="btn btn-primary mx-2" (click)="guardarEmpresa()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+<!--Modal Form Producto-->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Datos del producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div id="formulario-actualizar-datos" class="form-modal">
+            <form>
+                <div class="form-group">
+                    <label id="label-nombre" for="input-nombre">Nombre</label>
+                    <input [(ngModel)]="nombreProducto" id="input-nombre" type="text" class="form-control" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label id="label-descripcion" for="input-descripcion">Descripciom</label>
+                    <input [(ngModel)]="descripcionProducto" id="input-descripcion" type="text" class="form-control" name="descripcion">
+                </div>
+                <div class="form-group">
+                    <label id="label-precio" for="input-precio">Precio</label>
+                    <input [(ngModel)]="precio" id="input-precio" type="number" class="form-control" name="precio">
+                </div>
+                <div class="form-group">
+                    <label id="label-cantidad" for="input-cantidad">cantidad</label>
+                    <input [(ngModel)]="cantidad" id="input-cantidad" type="number" class="form-control" name="cantidad">
+                </div>
+                <div class="form-group">
+                    <label id="label-limagen" for="input-imagen">Imagen del Producto</label><br>
+                    <input type="file" name="img" (change)="onFileSelectProducto($event)" id="input-imagen"/>
+                </div>
+                <!-- <div>
+                    <button (click)="onSubmit()">Upload</button>
+                </div> -->
+                <div style="display: flex;justify-content: center;" class="py-3">
+                    <button id="cerrar-formulario" type="button" class="btn btn-primary mx-2" (click)="modal.close('cerrar modal')">Cerrar</button>
+                    <button id="agregar-info-empresa" type="button" class="btn btn-primary mx-2" (click)="guardarProducto()">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
